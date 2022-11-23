@@ -6,25 +6,29 @@ const btnConfirmar = document.querySelector(".confirmar");
 const btnCancelar = document.querySelector(".cancelar");
 const btnPedir = document.querySelector(".fazer-pedido");
 
+class Prato {
+  constructor(nome, imagem, descricao, preco) {
+    this.nome = nome;
+    this.imagem = imagem;
+    this.descricao = descricao;
+    this.preco = preco;
+  }
+}
+
 const pratos = [
-  {
-    nome: "Estrombelete de Frango",
-    imagem: "img/frango_yin_yang.png",
-    descricao: "Um pouco de batata, um pouco de salada",
-    preco: 14.9,
-  },
-  {
-    nome: "Asa de Boi",
-    imagem: "img/frango_yin_yang.png",
-    descricao: "Com molho shoyu",
-    preco: 14.9,
-  },
-  {
-    nome: "Carne de Monstro",
-    imagem: "img/frango_yin_yang.png",
-    descricao: "Com batata assada e farofa",
-    preco: 14.9,
-  },
+  new Prato(
+    "Estrombelete de Frango",
+    "img/frango_yin_yang.png",
+    "Um pouco de batata, um pouco de salada",
+    14.9
+  ),
+  new Prato("Asa de Boi", "img/frango_yin_yang.png", "Com molho shoyu", 14.9),
+  new Prato(
+    "Carne de Monstro",
+    "img/frango_yin_yang.png",
+    "Com batata assada e farofa",
+    14.9
+  ),
 ];
 
 const bebidas = [
