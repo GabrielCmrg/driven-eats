@@ -15,6 +15,24 @@ class Prato {
   }
 }
 
+class Bebida {
+  constructor(nome, imagem, descricao, preco) {
+    this.nome = nome;
+    this.imagem = imagem;
+    this.descricao = descricao;
+    this.preco = preco;
+  }
+}
+
+class Sobremesa {
+  constructor(nome, imagem, descricao, preco) {
+    this.nome = nome;
+    this.imagem = imagem;
+    this.descricao = descricao;
+    this.preco = preco;
+  }
+}
+
 const pratos = [
   new Prato(
     "Estrombelete de Frango",
@@ -32,45 +50,15 @@ const pratos = [
 ];
 
 const bebidas = [
-  {
-    nome: "Coquinha gelada",
-    imagem: "img/coquinha_gelada.png",
-    descricao: "Lata 350ml",
-    preco: 4.9,
-  },
-  {
-    nome: "Caldo de Cana",
-    imagem: "img/coquinha_gelada.png",
-    descricao: "Copo 600ml",
-    preco: 4.9,
-  },
-  {
-    nome: "Corote Gelado",
-    imagem: "img/coquinha_gelada.png",
-    descricao: "Garrafa 400ml",
-    preco: 4.9,
-  },
+  new Bebida("Coquinha gelada", "img/coquinha_gelada.png", "Lata 350ml", 4.9),
+  new Bebida("Caldo de Cana", "img/coquinha_gelada.png", "Copo 600ml", 4.9),
+  new Bebida("Corote Gelado", "img/coquinha_gelada.png", "Garrafa 400ml", 4.9),
 ];
 
 const sobremesas = [
-  {
-    nome: "Pudim",
-    imagem: "img/pudim.png",
-    descricao: "Gosto de doce de leite",
-    preco: 7.9,
-  },
-  {
-    nome: "Flam",
-    imagem: "img/pudim.png",
-    descricao: "Gosto de chocolate",
-    preco: 7.9,
-  },
-  {
-    nome: "Brigadeiro",
-    imagem: "img/pudim.png",
-    descricao: "3 unidades",
-    preco: 7.9,
-  },
+  new Sobremesa("Pudim", "img/pudim.png", "Gosto de doce de leite", 7.9),
+  new Sobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9),
+  new Sobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9),
 ];
 
 function selecionarPrato(elemento, { nome, preco }) {
