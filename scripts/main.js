@@ -111,6 +111,29 @@ class Menu {
       this.selecionarSobremesa(sobremesa)
     );
   }
+
+  confirmarPedido() {
+    const modal = document.querySelector(".overlay");
+    modal.classList.remove("escondido");
+
+    document.querySelector(".confirmar-pedido .prato .nome").innerHTML =
+      this.pratoSelecionado.nome;
+    document.querySelector(".confirmar-pedido .prato .preco").innerHTML =
+      this.pratoSelecionado.preco.toFixed(2);
+
+    document.querySelector(".confirmar-pedido .bebida .nome").innerHTML =
+      this.bebidaSelecionada.nome;
+    document.querySelector(".confirmar-pedido .bebida .preco").innerHTML =
+      this.bebidaSelecionada.preco.toFixed(2);
+
+    document.querySelector(".confirmar-pedido .sobremesa .nome").innerHTML =
+      this.sobremesaSelecionada.nome;
+    document.querySelector(".confirmar-pedido .sobremesa .preco").innerHTML =
+      this.sobremesaSelecionada.preco.toFixed(2);
+
+    document.querySelector(".confirmar-pedido .total .preco").innerHTML =
+      this.getPrecoTotal().toFixed(2);
+  }
 }
 
 const menu = new Menu();
@@ -161,30 +184,6 @@ menu.adicionarSobremesa(
 );
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
-
-function confirmarPedido() {
-  const modal = document.querySelector(".overlay");
-  modal.classList.remove("escondido");
-
-  document.querySelector(".confirmar-pedido .prato .nome").innerHTML =
-    menu.pratoSelecionado.nome;
-  document.querySelector(".confirmar-pedido .prato .preco").innerHTML =
-    menu.pratoSelecionado.preco.toFixed(2);
-
-  document.querySelector(".confirmar-pedido .bebida .nome").innerHTML =
-    menu.bebidaSelecionada.nome;
-  document.querySelector(".confirmar-pedido .bebida .preco").innerHTML =
-    menu.bebidaSelecionada.preco.toFixed(2);
-
-  document.querySelector(".confirmar-pedido .sobremesa .nome").innerHTML =
-    menu.sobremesaSelecionada.nome;
-  document.querySelector(".confirmar-pedido .sobremesa .preco").innerHTML =
-    menu.sobremesaSelecionada.preco.toFixed(2);
-
-  document.querySelector(".confirmar-pedido .total .preco").innerHTML = menu
-    .getPrecoTotal()
-    .toFixed(2);
-}
 
 function cancelarPedido() {
   const modal = document.querySelector(".overlay");
@@ -237,5 +236,5 @@ btnCancelar.addEventListener("click", () => {
 });
 
 btnPedir.addEventListener("click", () => {
-  confirmarPedido();
+  menu.confirmarPedido();
 });
