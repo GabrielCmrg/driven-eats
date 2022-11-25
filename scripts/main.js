@@ -51,13 +51,4 @@ menu.adicionarSobremesa(
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
 
-const pratosContainer = document.querySelector(".opcoes.prato");
-menu.pratos.forEach((prato) => pratosContainer.appendChild(prato.getView()));
-const bebidasContainer = document.querySelector(".opcoes.bebida");
-menu.bebidas.forEach((bebida) =>
-  bebidasContainer.appendChild(bebida.getView())
-);
-const sobremesasContainer = document.querySelector(".opcoes.sobremesa");
-menu.sobremesas.forEach((sobremesa) =>
-  sobremesasContainer.appendChild(sobremesa.getView())
-);
+menu.exibirProdutos();

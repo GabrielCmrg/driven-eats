@@ -157,4 +157,19 @@ export default class Menu {
     const modal = document.querySelector(".overlay");
     modal.classList.add("escondido");
   }
+
+  exibirProdutos() {
+    const pratosContainer = document.querySelector(".opcoes.prato");
+    this.pratos.forEach((prato) =>
+      pratosContainer.appendChild(prato.getView())
+    );
+    const bebidasContainer = document.querySelector(".opcoes.bebida");
+    this.bebidas.forEach((bebida) =>
+      bebidasContainer.appendChild(bebida.getView())
+    );
+    const sobremesasContainer = document.querySelector(".opcoes.sobremesa");
+    this.sobremesas.forEach((sobremesa) =>
+      sobremesasContainer.appendChild(sobremesa.getView())
+    );
+  }
 }
