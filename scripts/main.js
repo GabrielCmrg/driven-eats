@@ -141,7 +141,34 @@ class Menu {
   }
 }
 
-const menu = new Menu();
+class Restaurante {
+  constructor(telefone, menu = undefined) {
+    this.telefone = telefone;
+    if (menu) {
+      this.menu = menu;
+    } else {
+      this.menu = new Menu();
+    }
+  }
+
+  enviarZap() {
+    const telefoneRestaurante = this.telefone;
+    const encodedText = encodeURIComponent(
+      `Olá, gostaria de fazer o pedido: \n- Prato: ${
+        this.menu.pratoSelecionado.nome
+      } \n- Bebida: ${this.menu.bebidaSelecionada.nome} \n- Sobremesa: ${
+        this.menu.sobremesaSelecionada.nome
+      } \nTotal: R$ ${this.menu.getPrecoTotal().toFixed(2)}`
+    );
+
+    const urlWhatsapp = `https://wa.me/${telefoneRestaurante}?text=${encodedText}`;
+    window.open(urlWhatsapp);
+  }
+}
+
+const TELEFONE_RESTAURANTE = 553299999999;
+const restaurante = new Restaurante(TELEFONE_RESTAURANTE);
+const menu = restaurante.menu;
 
 menu.adicionarPrato(
   "Estrombelete de Frango",
@@ -190,20 +217,6 @@ menu.adicionarSobremesa(
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
 
-function enviarZap() {
-  const telefoneRestaurante = 553299999999;
-  const encodedText = encodeURIComponent(
-    `Olá, gostaria de fazer o pedido: \n- Prato: ${
-      menu.pratoSelecionado.nome
-    } \n- Bebida: ${menu.bebidaSelecionada.nome} \n- Sobremesa: ${
-      menu.sobremesaSelecionada.nome
-    } \nTotal: R$ ${menu.getPrecoTotal().toFixed(2)}`
-  );
-
-  const urlWhatsapp = `https://wa.me/${telefoneRestaurante}?text=${encodedText}`;
-  window.open(urlWhatsapp);
-}
-
 function verificarPedido() {
   if (
     menu.pratoSelecionado &&
@@ -228,7 +241,7 @@ menu.sobremesas.forEach((sobremesa) =>
 );
 
 btnConfirmar.addEventListener("click", () => {
-  enviarZap();
+  restaurante.enviarZap();
 });
 
 btnCancelar.addEventListener("click", () => {
