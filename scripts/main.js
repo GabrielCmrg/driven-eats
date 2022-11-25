@@ -21,6 +21,14 @@ class Menu {
     this.sobremesaSelecionada = null;
   }
 
+  getPrecoTotal() {
+    return (
+      this.pratoSelecionado.preco +
+      this.bebidaSelecionada.preco +
+      this.sobremesaSelecionada.preco
+    );
+  }
+
   adicionarPrato(nome, imagem, descricao, preco) {
     const novoPrato = new Prato(nome, imagem, descricao, preco);
     this.adicionarPratoListener(novoPrato);
@@ -154,14 +162,6 @@ menu.adicionarSobremesa(
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
 
-function getPrecoTotal() {
-  return (
-    menu.pratoSelecionado.preco +
-    menu.bebidaSelecionada.preco +
-    menu.sobremesaSelecionada.preco
-  );
-}
-
 function confirmarPedido() {
   const modal = document.querySelector(".overlay");
   modal.classList.remove("escondido");
@@ -181,8 +181,9 @@ function confirmarPedido() {
   document.querySelector(".confirmar-pedido .sobremesa .preco").innerHTML =
     menu.sobremesaSelecionada.preco.toFixed(2);
 
-  document.querySelector(".confirmar-pedido .total .preco").innerHTML =
-    getPrecoTotal().toFixed(2);
+  document.querySelector(".confirmar-pedido .total .preco").innerHTML = menu
+    .getPrecoTotal()
+    .toFixed(2);
 }
 
 function cancelarPedido() {
@@ -197,7 +198,7 @@ function enviarZap() {
       menu.pratoSelecionado.nome
     } \n- Bebida: ${menu.bebidaSelecionada.nome} \n- Sobremesa: ${
       menu.sobremesaSelecionada.nome
-    } \nTotal: R$ ${getPrecoTotal().toFixed(2)}`
+    } \nTotal: R$ ${menu.getPrecoTotal().toFixed(2)}`
   );
 
   const urlWhatsapp = `https://wa.me/${telefoneRestaurante}?text=${encodedText}`;
