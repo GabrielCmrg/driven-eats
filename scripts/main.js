@@ -4,7 +4,6 @@ import Sobremesa from "./sobremesa.js";
 
 const btnConfirmar = document.querySelector(".confirmar");
 const btnCancelar = document.querySelector(".cancelar");
-const btnPedir = document.querySelector(".fazer-pedido");
 
 class Menu {
   constructor(pratos = [], bebidas = [], sobremesas = []) {
@@ -19,6 +18,23 @@ class Menu {
     this.pratoSelecionado = null;
     this.bebidaSelecionada = null;
     this.sobremesaSelecionada = null;
+
+    this.btnPedir = document.querySelector(".fazer-pedido");
+    btnPedir.addEventListener("click", () => {
+      this.confirmarPedido();
+    });
+  }
+
+  verificarPedido() {
+    if (
+      this.pratoSelecionado &&
+      this.bebidaSelecionada &&
+      this.sobremesaSelecionada
+    ) {
+      this.btnPedir.classList.add("ativo");
+      this.btnPedir.disabled = false;
+      this.btnPedir.innerHTML = "Fazer pedido";
+    }
   }
 
   getPrecoTotal() {
@@ -61,7 +77,7 @@ class Menu {
       nome: prato.nome,
       preco: prato.preco,
     };
-    verificarPedido();
+    this.verificarPedido();
   }
 
   selecionarBebida(bebida) {
@@ -75,7 +91,7 @@ class Menu {
     bebida.selecionar();
 
     this.bebidaSelecionada = { nome: bebida.nome, preco: bebida.preco };
-    verificarPedido();
+    this.verificarPedido();
   }
 
   selecionarSobremesa(sobremesa) {
@@ -92,7 +108,7 @@ class Menu {
       nome: sobremesa.nome,
       preco: sobremesa.preco,
     };
-    verificarPedido();
+    this.verificarPedido();
   }
 
   adicionarPratoListener(prato) {
@@ -217,18 +233,6 @@ menu.adicionarSobremesa(
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
 
-function verificarPedido() {
-  if (
-    menu.pratoSelecionado &&
-    menu.bebidaSelecionada &&
-    menu.sobremesaSelecionada
-  ) {
-    btnPedir.classList.add("ativo");
-    btnPedir.disabled = false;
-    btnPedir.innerHTML = "Fazer pedido";
-  }
-}
-
 const pratosContainer = document.querySelector(".opcoes.prato");
 menu.pratos.forEach((prato) => pratosContainer.appendChild(prato.getView()));
 const bebidasContainer = document.querySelector(".opcoes.bebida");
@@ -246,8 +250,4 @@ btnConfirmar.addEventListener("click", () => {
 
 btnCancelar.addEventListener("click", () => {
   menu.cancelarPedido();
-});
-
-btnPedir.addEventListener("click", () => {
-  menu.confirmarPedido();
 });
