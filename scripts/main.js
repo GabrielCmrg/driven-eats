@@ -1,138 +1,20 @@
+import Prato from "./prato.js";
+import Bebida from "./bebida.js";
+import Sobremesa from "./sobremesa.js";
+
 const btnConfirmar = document.querySelector(".confirmar");
 const btnCancelar = document.querySelector(".cancelar");
 const btnPedir = document.querySelector(".fazer-pedido");
-
-class Prato {
-  constructor(nome, imagem, descricao, preco) {
-    this.nome = nome;
-    this.imagem = imagem;
-    this.descricao = descricao;
-    this.preco = preco;
-    this.elemento = document.createElement("div");
-    this.selecionado = false;
-  }
-
-  selecionar() {
-    this.selecionado = true;
-    this.elemento.classList.add("selecionado");
-  }
-
-  desselecionar() {
-    this.selecionado = false;
-    this.elemento.classList.remove("selecionado");
-  }
-
-  getView() {
-    const view = this.elemento;
-    view.classList.add("opcao");
-    view.addEventListener("click", () => {
-      selecionarPrato(this);
-    });
-    view.innerHTML = `
-        <img src="${this.imagem}" />
-        <div class="titulo">${this.nome}</div>
-        <div class="descricao">${this.descricao}</div>
-        <div class="fundo">
-            <div class="preco">R$ ${this.preco.toFixed(2)}</div>
-            <div class="check">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-        </div>
-    `;
-
-    return view;
-  }
-}
-
-class Bebida {
-  constructor(nome, imagem, descricao, preco) {
-    this.nome = nome;
-    this.imagem = imagem;
-    this.descricao = descricao;
-    this.preco = preco;
-    this.elemento = document.createElement("div");
-    this.selecionado = false;
-  }
-
-  selecionar() {
-    this.selecionado = true;
-    this.elemento.classList.add("selecionado");
-  }
-
-  desselecionar() {
-    this.selecionado = false;
-    this.elemento.classList.remove("selecionado");
-  }
-
-  getView() {
-    const view = this.elemento;
-    view.classList.add("opcao");
-    view.addEventListener("click", () => {
-      selecionarBebida(this);
-    });
-    view.innerHTML = `
-        <img src="${this.imagem}" />
-        <div class="titulo">${this.nome}</div>
-        <div class="descricao">${this.descricao}</div>
-        <div class="fundo">
-            <div class="preco">R$ ${this.preco.toFixed(2)}</div>
-            <div class="check">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-        </div>
-    `;
-
-    return view;
-  }
-}
-
-class Sobremesa {
-  constructor(nome, imagem, descricao, preco) {
-    this.nome = nome;
-    this.imagem = imagem;
-    this.descricao = descricao;
-    this.preco = preco;
-    this.elemento = document.createElement("div");
-    this.selecionado = false;
-  }
-
-  selecionar() {
-    this.selecionado = true;
-    this.elemento.classList.add("selecionado");
-  }
-
-  desselecionar() {
-    this.selecionado = false;
-    this.elemento.classList.remove("selecionado");
-  }
-
-  getView() {
-    const view = this.elemento;
-    view.classList.add("opcao");
-    view.addEventListener("click", () => {
-      selecionarSobremesa(this);
-    });
-    view.innerHTML = `
-        <img src="${this.imagem}" />
-        <div class="titulo">${this.nome}</div>
-        <div class="descricao">${this.descricao}</div>
-        <div class="fundo">
-            <div class="preco">R$ ${this.preco.toFixed(2)}</div>
-            <div class="check">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-        </div>
-    `;
-
-    return view;
-  }
-}
 
 class Menu {
   constructor(pratos = [], bebidas = [], sobremesas = []) {
     this.pratos = pratos;
     this.bebidas = bebidas;
     this.sobremesas = sobremesas;
+
+    this.pratos.forEach(this.adicionarPratoListener);
+    this.bebidas.forEach(this.adicionarBebidaListener);
+    this.sobremesas.forEach(this.adicionarSobremesaListener);
 
     this.pratoSelecionado = null;
     this.bebidaSelecionada = null;
@@ -141,17 +23,85 @@ class Menu {
 
   adicionarPrato(nome, imagem, descricao, preco) {
     const novoPrato = new Prato(nome, imagem, descricao, preco);
+    this.adicionarPratoListener(novoPrato);
     this.pratos.push(novoPrato);
   }
 
   adicionarBebida(nome, imagem, descricao, preco) {
     const novaBebida = new Bebida(nome, imagem, descricao, preco);
+    this.adicionarBebidaListener(novaBebida);
     this.bebidas.push(novaBebida);
   }
 
   adicionarSobremesa(nome, imagem, descricao, preco) {
     const novaSobremesa = new Sobremesa(nome, imagem, descricao, preco);
+    this.adicionarSobremesaListener(novaSobremesa);
     this.sobremesas.push(novaSobremesa);
+  }
+
+  selecionarPrato(prato) {
+    const selecionado = this.pratos.reduce((resultado, atual) => {
+      if (resultado) return resultado;
+      if (atual.selecionado) return atual;
+    }, undefined);
+    if (selecionado) {
+      selecionado.desselecionar();
+    }
+    prato.selecionar();
+
+    this.pratoSelecionado = {
+      nome: prato.nome,
+      preco: prato.preco,
+    };
+    verificarPedido();
+  }
+
+  selecionarBebida(bebida) {
+    const selecionado = this.bebidas.reduce((resultado, atual) => {
+      if (resultado) return resultado;
+      if (atual.selecionado) return atual;
+    }, undefined);
+    if (selecionado) {
+      selecionado.desselecionar();
+    }
+    bebida.selecionar();
+
+    this.bebidaSelecionada = { nome: bebida.nome, preco: bebida.preco };
+    verificarPedido();
+  }
+
+  selecionarSobremesa(sobremesa) {
+    const selecionado = this.sobremesas.reduce((resultado, atual) => {
+      if (resultado) return resultado;
+      if (atual.selecionado) return atual;
+    }, undefined);
+    if (selecionado) {
+      selecionado.desselecionar();
+    }
+    sobremesa.selecionar();
+
+    this.sobremesaSelecionada = {
+      nome: sobremesa.nome,
+      preco: sobremesa.preco,
+    };
+    verificarPedido();
+  }
+
+  adicionarPratoListener(prato) {
+    const elemento = prato.elemento;
+    elemento.addEventListener("click", () => this.selecionarPrato(prato));
+  }
+
+  adicionarBebidaListener(bebida) {
+    const elemento = bebida.elemento;
+    elemento.addEventListener("click", () => this.selecionarBebida(bebida));
+  }
+
+  adicionarSobremesaListener(sobremesa) {
+    const elemento = sobremesa.elemento;
+    elemento.addEventListener("click", () =>
+      this.selecionarSobremesa(sobremesa)
+    );
   }
 }
 
@@ -203,51 +153,6 @@ menu.adicionarSobremesa(
 );
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
-
-function selecionarPrato(prato) {
-  const selecionado = menu.pratos.reduce((resultado, atual) => {
-    if (resultado) return resultado;
-    if (atual.selecionado) return atual;
-  }, undefined);
-  if (selecionado) {
-    selecionado.desselecionar();
-  }
-  prato.selecionar();
-
-  menu.pratoSelecionado = {
-    nome: prato.nome,
-    preco: prato.preco,
-  };
-  verificarPedido();
-}
-
-function selecionarBebida(bebida) {
-  const selecionado = menu.bebidas.reduce((resultado, atual) => {
-    if (resultado) return resultado;
-    if (atual.selecionado) return atual;
-  }, undefined);
-  if (selecionado) {
-    selecionado.desselecionar();
-  }
-  bebida.selecionar();
-
-  menu.bebidaSelecionada = { nome: bebida.nome, preco: bebida.preco };
-  verificarPedido();
-}
-
-function selecionarSobremesa(sobremesa) {
-  const selecionado = menu.sobremesas.reduce((resultado, atual) => {
-    if (resultado) return resultado;
-    if (atual.selecionado) return atual;
-  }, undefined);
-  if (selecionado) {
-    selecionado.desselecionar();
-  }
-  sobremesa.selecionar();
-
-  menu.sobremesaSelecionada = { nome: sobremesa.nome, preco: sobremesa.preco };
-  verificarPedido();
-}
 
 function getPrecoTotal() {
   return (
