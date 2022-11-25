@@ -13,13 +13,24 @@ class Prato {
     this.descricao = descricao;
     this.preco = preco;
     this.elemento = document.createElement("div");
+    this.selecionado = false;
+  }
+
+  selecionar() {
+    this.selecionado = true;
+    this.elemento.classList.add("selecionado");
+  }
+
+  desselecionar() {
+    this.selecionado = false;
+    this.elemento.classList.remove("selecionado");
   }
 
   getView() {
     const view = this.elemento;
     view.classList.add("opcao");
     view.addEventListener("click", () => {
-      selecionarPrato(view, this.nome, this.preco);
+      selecionarPrato(this);
     });
     view.innerHTML = `
         <img src="${this.imagem}" />
@@ -44,13 +55,24 @@ class Bebida {
     this.descricao = descricao;
     this.preco = preco;
     this.elemento = document.createElement("div");
+    this.selecionado = false;
+  }
+
+  selecionar() {
+    this.selecionado = true;
+    this.elemento.classList.add("selecionado");
+  }
+
+  desselecionar() {
+    this.selecionado = false;
+    this.elemento.classList.remove("selecionado");
   }
 
   getView() {
     const view = this.elemento;
     view.classList.add("opcao");
     view.addEventListener("click", () => {
-      selecionarBebida(view, this.nome, this.preco);
+      selecionarBebida(this);
     });
     view.innerHTML = `
         <img src="${this.imagem}" />
@@ -75,13 +97,24 @@ class Sobremesa {
     this.descricao = descricao;
     this.preco = preco;
     this.elemento = document.createElement("div");
+    this.selecionado = false;
+  }
+
+  selecionar() {
+    this.selecionado = true;
+    this.elemento.classList.add("selecionado");
+  }
+
+  desselecionar() {
+    this.selecionado = false;
+    this.elemento.classList.remove("selecionado");
   }
 
   getView() {
     const view = this.elemento;
     view.classList.add("opcao");
     view.addEventListener("click", () => {
-      selecionarSobremesa(view, this.nome, this.preco);
+      selecionarSobremesa(this);
     });
     view.innerHTML = `
         <img src="${this.imagem}" />
@@ -127,39 +160,48 @@ const sobremesas = [
   new Sobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9),
 ];
 
-function selecionarPrato(elemento, { nome, preco }) {
-  const selecionado = document.querySelector(".prato .selecionado");
-  if (selecionado !== null) {
-    selecionado.classList.remove("selecionado");
+function selecionarPrato(prato) {
+  const selecionado = pratos.reduce((resultado, atual) => {
+    if (resultado) return resultado;
+    if (atual.selecionado) return atual;
+  }, undefined);
+  if (selecionado) {
+    selecionado.desselecionar();
   }
-  elemento.classList.add("selecionado");
+  prato.selecionar();
 
   pratoSelecionado = {
-    nome,
-    preco,
+    nome: prato.nome,
+    preco: prato.preco,
   };
   verificarPedido();
 }
 
-function selecionarBebida(elemento, { nome, preco }) {
-  const selecionado = document.querySelector(".bebida .selecionado");
-  if (selecionado !== null) {
-    selecionado.classList.remove("selecionado");
+function selecionarBebida(bebida) {
+  const selecionado = bebidas.reduce((resultado, atual) => {
+    if (resultado) return resultado;
+    if (atual.selecionado) return atual;
+  }, undefined);
+  if (selecionado) {
+    selecionado.desselecionar();
   }
-  elemento.classList.add("selecionado");
+  bebida.selecionar();
 
-  bebidaSelecionada = { nome, preco };
+  bebidaSelecionada = { nome: bebida.nome, preco: bebida.preco };
   verificarPedido();
 }
 
-function selecionarSobremesa(elemento, { nome, preco }) {
-  const selecionado = document.querySelector(".sobremesa .selecionado");
-  if (selecionado !== null) {
-    selecionado.classList.remove("selecionado");
+function selecionarSobremesa(sobremesa) {
+  const selecionado = sobremesas.reduce((resultado, atual) => {
+    if (resultado) return resultado;
+    if (atual.selecionado) return atual;
+  }, undefined);
+  if (selecionado) {
+    selecionado.desselecionar();
   }
-  elemento.classList.add("selecionado");
+  sobremesa.selecionar();
 
-  sobremesaSelecionada = { nome, preco };
+  sobremesaSelecionada = { nome: sobremesa.nome, preco: sobremesa.preco };
   verificarPedido();
 }
 
