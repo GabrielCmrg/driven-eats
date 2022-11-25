@@ -134,6 +134,11 @@ class Menu {
     document.querySelector(".confirmar-pedido .total .preco").innerHTML =
       this.getPrecoTotal().toFixed(2);
   }
+
+  cancelarPedido() {
+    const modal = document.querySelector(".overlay");
+    modal.classList.add("escondido");
+  }
 }
 
 const menu = new Menu();
@@ -185,11 +190,6 @@ menu.adicionarSobremesa(
 menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
 menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
 
-function cancelarPedido() {
-  const modal = document.querySelector(".overlay");
-  modal.classList.add("escondido");
-}
-
 function enviarZap() {
   const telefoneRestaurante = 553299999999;
   const encodedText = encodeURIComponent(
@@ -232,7 +232,7 @@ btnConfirmar.addEventListener("click", () => {
 });
 
 btnCancelar.addEventListener("click", () => {
-  cancelarPedido();
+  menu.cancelarPedido();
 });
 
 btnPedir.addEventListener("click", () => {
