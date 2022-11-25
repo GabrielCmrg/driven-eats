@@ -1,7 +1,3 @@
-let pratoSelecionado = null;
-let bebidaSelecionada = null;
-let sobremesaSelecionada = null;
-
 const btnConfirmar = document.querySelector(".confirmar");
 const btnCancelar = document.querySelector(".cancelar");
 const btnPedir = document.querySelector(".fazer-pedido");
@@ -132,36 +128,84 @@ class Sobremesa {
   }
 }
 
-const pratos = [
-  new Prato(
-    "Estrombelete de Frango",
-    "img/frango_yin_yang.png",
-    "Um pouco de batata, um pouco de salada",
-    14.9
-  ),
-  new Prato("Asa de Boi", "img/frango_yin_yang.png", "Com molho shoyu", 14.9),
-  new Prato(
-    "Carne de Monstro",
-    "img/frango_yin_yang.png",
-    "Com batata assada e farofa",
-    14.9
-  ),
-];
+class Menu {
+  constructor(pratos = [], bebidas = [], sobremesas = []) {
+    this.pratos = pratos;
+    this.bebidas = bebidas;
+    this.sobremesas = sobremesas;
 
-const bebidas = [
-  new Bebida("Coquinha gelada", "img/coquinha_gelada.png", "Lata 350ml", 4.9),
-  new Bebida("Caldo de Cana", "img/coquinha_gelada.png", "Copo 600ml", 4.9),
-  new Bebida("Corote Gelado", "img/coquinha_gelada.png", "Garrafa 400ml", 4.9),
-];
+    this.pratoSelecionado = null;
+    this.bebidaSelecionada = null;
+    this.sobremesaSelecionada = null;
+  }
 
-const sobremesas = [
-  new Sobremesa("Pudim", "img/pudim.png", "Gosto de doce de leite", 7.9),
-  new Sobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9),
-  new Sobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9),
-];
+  adicionarPrato(nome, imagem, descricao, preco) {
+    const novoPrato = new Prato(nome, imagem, descricao, preco);
+    this.pratos.push(novoPrato);
+  }
+
+  adicionarBebida(nome, imagem, descricao, preco) {
+    const novaBebida = new Bebida(nome, imagem, descricao, preco);
+    this.bebidas.push(novaBebida);
+  }
+
+  adicionarSobremesa(nome, imagem, descricao, preco) {
+    const novaSobremesa = new Sobremesa(nome, imagem, descricao, preco);
+    this.sobremesas.push(novaSobremesa);
+  }
+}
+
+const menu = new Menu();
+
+menu.adicionarPrato(
+  "Estrombelete de Frango",
+  "img/frango_yin_yang.png",
+  "Um pouco de batata, um pouco de salada",
+  14.9
+);
+menu.adicionarPrato(
+  "Asa de Boi",
+  "img/frango_yin_yang.png",
+  "Com molho shoyu",
+  14.9
+);
+menu.adicionarPrato(
+  "Carne de Monstro",
+  "img/frango_yin_yang.png",
+  "Com batata assada e farofa",
+  14.9
+);
+
+menu.adicionarBebida(
+  "Coquinha gelada",
+  "img/coquinha_gelada.png",
+  "Lata 350ml",
+  4.9
+);
+menu.adicionarBebida(
+  "Caldo de Cana",
+  "img/coquinha_gelada.png",
+  "Copo 600ml",
+  4.9
+);
+menu.adicionarBebida(
+  "Corote Gelado",
+  "img/coquinha_gelada.png",
+  "Garrafa 400ml",
+  4.9
+);
+
+menu.adicionarSobremesa(
+  "Pudim",
+  "img/pudim.png",
+  "Gosto de doce de leite",
+  7.9
+);
+menu.adicionarSobremesa("Flam", "img/pudim.png", "Gosto de chocolate", 7.9);
+menu.adicionarSobremesa("Brigadeiro", "img/pudim.png", "3 unidades", 7.9);
 
 function selecionarPrato(prato) {
-  const selecionado = pratos.reduce((resultado, atual) => {
+  const selecionado = menu.pratos.reduce((resultado, atual) => {
     if (resultado) return resultado;
     if (atual.selecionado) return atual;
   }, undefined);
@@ -170,7 +214,7 @@ function selecionarPrato(prato) {
   }
   prato.selecionar();
 
-  pratoSelecionado = {
+  menu.pratoSelecionado = {
     nome: prato.nome,
     preco: prato.preco,
   };
@@ -178,7 +222,7 @@ function selecionarPrato(prato) {
 }
 
 function selecionarBebida(bebida) {
-  const selecionado = bebidas.reduce((resultado, atual) => {
+  const selecionado = menu.bebidas.reduce((resultado, atual) => {
     if (resultado) return resultado;
     if (atual.selecionado) return atual;
   }, undefined);
@@ -187,12 +231,12 @@ function selecionarBebida(bebida) {
   }
   bebida.selecionar();
 
-  bebidaSelecionada = { nome: bebida.nome, preco: bebida.preco };
+  menu.bebidaSelecionada = { nome: bebida.nome, preco: bebida.preco };
   verificarPedido();
 }
 
 function selecionarSobremesa(sobremesa) {
-  const selecionado = sobremesas.reduce((resultado, atual) => {
+  const selecionado = menu.sobremesas.reduce((resultado, atual) => {
     if (resultado) return resultado;
     if (atual.selecionado) return atual;
   }, undefined);
@@ -201,15 +245,15 @@ function selecionarSobremesa(sobremesa) {
   }
   sobremesa.selecionar();
 
-  sobremesaSelecionada = { nome: sobremesa.nome, preco: sobremesa.preco };
+  menu.sobremesaSelecionada = { nome: sobremesa.nome, preco: sobremesa.preco };
   verificarPedido();
 }
 
 function getPrecoTotal() {
   return (
-    pratoSelecionado.preco +
-    bebidaSelecionada.preco +
-    sobremesaSelecionada.preco
+    menu.pratoSelecionado.preco +
+    menu.bebidaSelecionada.preco +
+    menu.sobremesaSelecionada.preco
   );
 }
 
@@ -218,19 +262,19 @@ function confirmarPedido() {
   modal.classList.remove("escondido");
 
   document.querySelector(".confirmar-pedido .prato .nome").innerHTML =
-    pratoSelecionado.nome;
+    menu.pratoSelecionado.nome;
   document.querySelector(".confirmar-pedido .prato .preco").innerHTML =
-    pratoSelecionado.preco.toFixed(2);
+    menu.pratoSelecionado.preco.toFixed(2);
 
   document.querySelector(".confirmar-pedido .bebida .nome").innerHTML =
-    bebidaSelecionada.nome;
+    menu.bebidaSelecionada.nome;
   document.querySelector(".confirmar-pedido .bebida .preco").innerHTML =
-    bebidaSelecionada.preco.toFixed(2);
+    menu.bebidaSelecionada.preco.toFixed(2);
 
   document.querySelector(".confirmar-pedido .sobremesa .nome").innerHTML =
-    sobremesaSelecionada.nome;
+    menu.sobremesaSelecionada.nome;
   document.querySelector(".confirmar-pedido .sobremesa .preco").innerHTML =
-    sobremesaSelecionada.preco.toFixed(2);
+    menu.sobremesaSelecionada.preco.toFixed(2);
 
   document.querySelector(".confirmar-pedido .total .preco").innerHTML =
     getPrecoTotal().toFixed(2);
@@ -245,9 +289,9 @@ function enviarZap() {
   const telefoneRestaurante = 553299999999;
   const encodedText = encodeURIComponent(
     `Olá, gostaria de fazer o pedido: \n- Prato: ${
-      pratoSelecionado.nome
-    } \n- Bebida: ${bebidaSelecionada.nome} \n- Sobremesa: ${
-      sobremesaSelecionada.nome
+      menu.pratoSelecionado.nome
+    } \n- Bebida: ${menu.bebidaSelecionada.nome} \n- Sobremesa: ${
+      menu.sobremesaSelecionada.nome
     } \nTotal: R$ ${getPrecoTotal().toFixed(2)}`
   );
 
@@ -256,7 +300,11 @@ function enviarZap() {
 }
 
 function verificarPedido() {
-  if (pratoSelecionado && bebidaSelecionada && sobremesaSelecionada) {
+  if (
+    menu.pratoSelecionado &&
+    menu.bebidaSelecionada &&
+    menu.sobremesaSelecionada
+  ) {
     btnPedir.classList.add("ativo");
     btnPedir.disabled = false;
     btnPedir.innerHTML = "Fazer pedido";
@@ -264,11 +312,13 @@ function verificarPedido() {
 }
 
 const pratosContainer = document.querySelector(".opcoes.prato");
-pratos.forEach((prato) => pratosContainer.appendChild(prato.getView()));
+menu.pratos.forEach((prato) => pratosContainer.appendChild(prato.getView()));
 const bebidasContainer = document.querySelector(".opcoes.bebida");
-bebidas.forEach((bebida) => bebidasContainer.appendChild(bebida.getView()));
+menu.bebidas.forEach((bebida) =>
+  bebidasContainer.appendChild(bebida.getView())
+);
 const sobremesasContainer = document.querySelector(".opcoes.sobremesa");
-sobremesas.forEach((sobremesa) =>
+menu.sobremesas.forEach((sobremesa) =>
   sobremesasContainer.appendChild(sobremesa.getView())
 );
 
