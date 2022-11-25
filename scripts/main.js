@@ -43,6 +43,28 @@ class Bebida {
     this.imagem = imagem;
     this.descricao = descricao;
     this.preco = preco;
+    this.elemento = document.createElement("div");
+  }
+
+  getView() {
+    const view = this.elemento;
+    view.classList.add("opcao");
+    view.addEventListener("click", () => {
+      selecionarBebida(view, this.nome, this.preco);
+    });
+    view.innerHTML = `
+        <img src="${this.imagem}" />
+        <div class="titulo">${this.nome}</div>
+        <div class="descricao">${this.descricao}</div>
+        <div class="fundo">
+            <div class="preco">R$ ${this.preco.toFixed(2)}</div>
+            <div class="check">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+        </div>
+    `;
+
+    return view;
   }
 }
 
@@ -52,6 +74,28 @@ class Sobremesa {
     this.imagem = imagem;
     this.descricao = descricao;
     this.preco = preco;
+    this.elemento = document.createElement("div");
+  }
+
+  getView() {
+    const view = this.elemento;
+    view.classList.add("opcao");
+    view.addEventListener("click", () => {
+      selecionarSobremesa(view, this.nome, this.preco);
+    });
+    view.innerHTML = `
+        <img src="${this.imagem}" />
+        <div class="titulo">${this.nome}</div>
+        <div class="descricao">${this.descricao}</div>
+        <div class="fundo">
+            <div class="preco">R$ ${this.preco.toFixed(2)}</div>
+            <div class="check">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+        </div>
+    `;
+
+    return view;
   }
 }
 
@@ -177,57 +221,13 @@ function verificarPedido() {
   }
 }
 
-function getBebidaView(bebida) {
-  const view = document.createElement("div");
-  view.classList.add("opcao");
-  view.addEventListener("click", () => {
-    selecionarBebida(view, bebida.nome, bebida.preco);
-  });
-  view.innerHTML = `
-        <img src="${bebida.imagem}" />
-        <div class="titulo">${bebida.nome}</div>
-        <div class="descricao">${bebida.descricao}</div>
-        <div class="fundo">
-            <div class="preco">R$ ${bebida.preco.toFixed(2)}</div>
-            <div class="check">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-        </div>
-    `;
-
-  return view;
-}
-
-function getSobremesaView(sobremesa) {
-  const view = document.createElement("div");
-  view.classList.add("opcao");
-  view.addEventListener("click", () => {
-    selecionarSobremesa(view, sobremesa.nome, sobremesa.preco);
-  });
-  view.innerHTML = `
-        <img src="${sobremesa.imagem}" />
-        <div class="titulo">${sobremesa.nome}</div>
-        <div class="descricao">${sobremesa.descricao}</div>
-        <div class="fundo">
-            <div class="preco">R$ ${sobremesa.preco.toFixed(2)}</div>
-            <div class="check">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-        </div>
-    `;
-
-  return view;
-}
-
 const pratosContainer = document.querySelector(".opcoes.prato");
 pratos.forEach((prato) => pratosContainer.appendChild(prato.getView()));
 const bebidasContainer = document.querySelector(".opcoes.bebida");
-bebidas.forEach((bebida) =>
-  bebidasContainer.appendChild(getBebidaView(bebida))
-);
+bebidas.forEach((bebida) => bebidasContainer.appendChild(bebida.getView()));
 const sobremesasContainer = document.querySelector(".opcoes.sobremesa");
 sobremesas.forEach((sobremesa) =>
-  sobremesasContainer.appendChild(getSobremesaView(sobremesa))
+  sobremesasContainer.appendChild(sobremesa.getView())
 );
 
 btnConfirmar.addEventListener("click", () => {
