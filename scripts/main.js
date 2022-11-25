@@ -1,10 +1,13 @@
 import Menu from "./menu.js";
 
-const btnConfirmar = document.querySelector(".confirmar");
-
 class Restaurante {
   constructor(telefone, menu = undefined) {
     this.telefone = telefone;
+    this.btnConfirmar = document.querySelector(".confirmar");
+    this.btnConfirmar.addEventListener("click", () => {
+      this.enviarZap();
+    });
+
     if (menu) {
       this.menu = menu;
     } else {
@@ -88,7 +91,3 @@ const sobremesasContainer = document.querySelector(".opcoes.sobremesa");
 menu.sobremesas.forEach((sobremesa) =>
   sobremesasContainer.appendChild(sobremesa.getView())
 );
-
-btnConfirmar.addEventListener("click", () => {
-  restaurante.enviarZap();
-});
